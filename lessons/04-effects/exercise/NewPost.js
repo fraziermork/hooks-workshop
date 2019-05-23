@@ -11,8 +11,25 @@ const MAX_MESSAGE_LENGTH = 200
 
 export default function NewPost({ takeFocus, date, onSuccess, showAvatar }) {
   const [{ auth }] = useAppState()
-  const [message, setMessage] = useState('Ran around the lake.')
+  const inputRef = useRef(null);
+  const key = makeNewPostKey(date);
+
+  const initialValue = getLocalStorageValue(key);
+  const [message, setMessage] = useState(initialValue || '');
+
   const messageTooLong = message.length > MAX_MESSAGE_LENGTH
+
+  useEffect(() => {
+    if (!messageTooLong) {
+      setLocalStorage(key, message);
+    }
+  }, [key, message, messageTooLong]);
+
+  useEffect(() => {
+    if (takeFocus) {
+      inputRef.current.focus();
+    }
+  }, [takeFocus, inputRef]);
 
   function handleMessageChange(event) {
     setMessage(event.target.value)
@@ -23,6 +40,7 @@ export default function NewPost({ takeFocus, date, onSuccess, showAvatar }) {
       {showAvatar && <Avatar uid={auth.uid} size={70} />}
       <form className="NewPost_form">
         <textarea
+          ref={inputRef}
           className="NewPost_input"
           placeholder="Tell us about your workout!"
           value={message}
