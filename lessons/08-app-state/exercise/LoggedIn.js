@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react"
+import React, { useEffect, Fragment, useCallback } from "react"
 import { Router, Route, DefaultRoute } from "app/packages/react-router-next"
 import { fetchUser, isValidDate } from "app/utils"
 import { useAppState } from "app/app-state"
@@ -9,8 +9,33 @@ import TopBar from "app/TopBar"
 import User from "app/User"
 import NotFound from "app/NotFound"
 
+
+
+function useLogger() {
+  const [state, dispatch] = useAppState();
+  const dispatchWithLogging = useCallback((action) => {
+    console.log(action.type);
+    return dispatch(action)
+  }, [dispatch]);
+  return [
+    state,
+    dispatchWithLogging,
+  ];
+}
+
+function useUser() {
+  const [{ auth }] = useAppState();
+
+  useEffect(() => {
+    console.log('auth', auth);
+  }, [auth]);
+
+}
+
 export default function LoggedIn() {
   const user = null
+
+  useUser();
 
   return user ? (
     <Fragment>

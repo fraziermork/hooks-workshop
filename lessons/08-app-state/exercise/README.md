@@ -11,3 +11,21 @@ Open up `LoggedIn.js` and notice there's a null user object. You can fetch a use
 - Now access the user from `useAppState`
 
 You can review modules/app/app-state.js to see how we created `useAppState`.
+
+
+
+// notes
+// could compose middleware like this?
+```javascript
+function App() {
+    const [state, dispatch] = [
+      // redux middlewares...
+      // must have signature ([store, dispatch]) => [store, dispatch];
+    ].reduce(
+      (args, middleware) => middleware(args),
+      useReducer(initialState),
+    )
+}
+
+
+```
