@@ -49,3 +49,8 @@ We want this:
 4. Use context in `MonthField`, `DayField`, and `YearField`.
 
 5. Go back to `SignupForm.js` and you can tweak the order of the fields, put other values around them, do whatever you want!
+
+
+// asked about tabs in reachUI, noticed that they use cloneElement there instead of context, asked why
+// said it works when you know the parent/child relationship, like that a Tab will be in a TabList
+// said could just as easily use context, but maybe thats a little overkill
